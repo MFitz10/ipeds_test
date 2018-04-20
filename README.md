@@ -1,4 +1,4 @@
-Deloitte Workforce Analytics Sourcing Tool
+IPEDS Tool
 ===========================================
 
 Data Sources
@@ -72,7 +72,6 @@ The universities app contains the API for the IPEDS and other university data.
 This API is built with the Django Rest Framework and is helpful for
 understanding the data structures used in the Sourcing Tool. It is deployed at:
 
-http://10.118.4.223:84/sourcing_tool/universities/
 
 ### [dashboard](dashboard/)
 
@@ -80,7 +79,6 @@ The dashboard app is the front-end web app for the Sourcing Tool. All of the
 html and static files (JavaScript, CSS, etc.) are found in this app. The
 Sourcing Tool was built as a single-page web application. It is deployed at:
 
-http://10.118.4.223:84/sourcing_tool/dashboard/
 
 NOTE: The custom JavaScript files for the project are sourcingtool.js and
 bubblechart.js. All other JavaScript files are from 3rd parties.
@@ -90,7 +88,6 @@ bubblechart.js. All other JavaScript files are from 3rd parties.
 There is also an admin site, which currently has functionality to edit the 
 school recruiting affiliations. The admin site is deployed at:
 
-http://10.118.4.223/sourcing_tool/admin/
 
 Project Workflow
 -----------------
