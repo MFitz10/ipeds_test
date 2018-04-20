@@ -1,0 +1,350 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Workforce Analytics by Deloitte - Sourcing Tool</title>
+
+<!-- Favicon -->
+<link href="{% static 'dashboard/img/WFAFavicon.ico' %}" rel="shortcut icon" 
+type = "image/x-icon">
+
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'dashboard/css/bootstrap.custom.css' %}" rel="stylesheet">
+<!-- Style CSS -->
+<link href="{% static 'dashboard/css/style.css' %}" rel="stylesheet">
+
+<!-- Select2 CSS -->
+<link href="{% static 'dashboard/css/select2.css' %}" rel="stylesheet">
+
+<!-- Leaflet CSS -->
+<link href="{% static 'dashboard/css/leaflet.css' %}" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="{% static 'dashboard/css/landing-page.custom.css' %}" rel="stylesheet">
+<link href="{% static 'dashboard/css/simple-sidebar.custom.css' %}" rel="stylesheet">
+<link href="{% static 'dashboard/css/jquery.dataTables.custom.css' %}" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="{% static 'dashboard/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"  type="text/css">
+<link href="{% static 'dashboard/css/lato.css' %}" rel="stylesheet"  type="text/css">
+
+{% autoescape off %}
+<script>
+    var stem_majors = {{ stem_majors_json }};
+    var genders = {{ genders_json }};
+    var ethnicities = {{ ethnicities_json }};
+</script>
+{% endautoescape %}
+
+</head>
+
+<body>
+
+<div id = "load">
+    <img width = 40% src = "{% static 'dashboard/img/oval.svg' %}"> 
+</div>
+
+<!-- Splash Page -->
+<div class="splash-background">
+    <div class = "splash-container">
+        <div class="splash-message">
+            <div class = "splash-logotitle">
+                <img height = 50% width = 100% 
+                src = "{% static 'dashboard/img/logo.png' %}">
+            </div>
+            <div class = "splash-sourcingtitle">
+                Sourcing Tool
+            </div>
+            <div class = "splash-chalktitle">
+                <img width = 95% 
+                src = "{% static 'dashboard/img/chalkline.png' %}">
+            </div>
+            <p class = "splash-desc"> 
+                The Sourcing Tool simplifies sourcing strategies by utilizing a combination of the Department of Education's open source data and internal recruiting data, and it provides analysis to evaluate whether there are institutions that should be incorporated into recruiting strategies. The tool also allows users to drill down on specific schools of interest to identify additional information, including academic characteristics, applicant flow, and diversity metrics.
+            </p>
+            <a href="#wrapper" id="enter" class="splash-pagescrollbtn">Enter</a>
+        </div>
+    </div>
+</div>
+<!-- /Splash Page -->
+
+<!-- Map Page -->
+<div id = "wrapper" class ="map-page">
+    <div id="introModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content instructions-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Getting Started</h4>
+          </div>
+          <div class="modal-body">
+              <p>
+                  To get the most out of the Sourcing Tool, please read the steps outlined in the highlighted portions of the page.
+              </p>
+              <p>
+                  When you are ready to proceed, click below to hide all of the instructions.
+              </p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default">Start!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="mapdashboard" tabindex="-1" role="dialog" 
+        aria-labelledby="mapdashboardlabel" aria-hidden="true">
+        <div class="modal-dialog dashboard-modal-dialog">
+            <div class="modal-content dashboard-modal-content">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+              <div class="side-header">
+                <i class="fa fa-info-circle fa-2x info-right" data-toggle="tooltip" data-placement="bottom"
+                    title="This panel contains general institutional data from 
+                    the U.S. Department of Education's Integrated Postsecondary Education Data System.
+                    Hover over SAT scores, ACT scores or graduation rates for more information."></i>
+                <div class="titlecontainer">University Dashboard</div>
+                <div class = "textcontainer">
+                    <p></p>                    
+                    <p></p>
+                </div>                
+                <div class = "satcontainer">
+                    <H5 style = "color : #f7f7f7"> SAT Scores </H5> 
+                    <H5 style = "color : #f7f7f7"> 25th-75th Percentiles </H5> 
+                </div>
+                <div class = "actcontainer">
+                    <H5 style = "color : #f7f7f7"> ACT Scores </H5> 
+                    <H5 style = "color : #f7f7f7"> 25th-75th Percentiles </H5> 
+                </div>
+                <div class = "gradcontainer">
+                    <H5 style = "color : #f7f7f7">Graduation Rates </H5> 
+                </div>
+                <div class = "acceptcontainer">
+                    <H5 style = "color : #f7f7f7"> Acceptance Rate </H5>
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class = "applicantcontainer">
+                    <div class = "container-header">
+                        <span class="container-title"> Applicant Flow </span>
+                        <i class="fa fa-info-circle fa-2x info-left" data-toggle="tooltip" data-placement="bottom" title=
+                        'This section projects the number of candidates meeting the selected criteria who are likely to apply, 
+                        and the number likely to progress through each major hiring gate. "Virtual" shows the projections if 
+                        recruiting at this institution is entirely virtual and does not include on-campus visits. "On-Campus" 
+                        shows the projections if recruiting at this institution includes on-campus visits. Hover over bars for more information.'></i>
+                    </div>
+                </div>
+                <div class = "bubblecontainer">                      
+                    <div class = "container-header">
+                        <span class="container-title"> Diversity </span>
+                        <i class="fa fa-info-circle fa-2x info-left" data-toggle="tooltip" data-placement="bottom" title=
+                            "This section shows the number of degrees meeting the selected 
+                            criteria, grouped by demographics. Each bubble represents a unique 
+                            combination of gender, ethnicity, major, and degree type. Bubble size 
+                            represents the number of degrees. Hover over the key icon for information 
+                            about the color scheme, or hover over any bubble to find out its details."></i>
+                        <i id="bubbleinfo" class="fa fa-key fa-2x info-left" data-placement="bottom"></i>
+                        <span class="btn-group diversity-buttons" data-toggle="buttons">
+                            <label class="btn btn-default active" id="all">
+                                <input type="radio" name="options"> All Degrees
+                            </label>
+                            <label class="btn btn-default" id="gender">
+                                <input type="radio" name="options"> Degrees by
+                                Gender
+                            </label>
+                            <label class="btn btn-default" id="ethnicity">
+                                <input type="radio" name="options"> Degrees by
+                                Ethnicity
+                            </label>
+                            <label class="btn btn-default" id="cip_family">
+                                <input type="radio" name="options"> Degrees by
+                                Major
+                            </label>
+                            <label class="btn btn-default" id="awlevel">
+                                <input type="radio" name="options"> Degrees by
+                                Type
+                            </label>
+                        </span>
+                    </div>
+                    <div class="bubblesvgcontainer"></div>
+                </div>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar-wrapper" data-toggle="popover" data-placement="right" data-title="1. Select Criteria"
+        data-content='Start with the menu panel on the left. Choose any fields of interest. Click "Submit" to find the top schools for hiring candidates who meet the selected criteria.'> 
+        <div class="map-inputs">
+            <div class = "mapfilters-subheaders instructions">
+                <b>
+                    Use the fields below to refine the types of candidates on which to match.
+                </b>
+            </div>
+            <div class = "mapfilters-subheaders"> 
+                Please type in a job category to highlight relevant majors:
+            </div>
+            <div id = "mapfilters-jobselect">
+                <select id="select2-job" class="select2-container" multiple="multiple">
+                    {% for job, cips in jobs %}
+                    <option value="{{ cips }}">{{ job }}</option> 
+                    {% endfor %}
+                </select>
+            </div>
+            <div class = "mapfilters-checkbox">
+                <label class = "checkbox-inline" data-toggle="tooltip" title="Science, Technology, Engineering and Math (STEM) majors">
+                    <input id="checkbox-stem" type = "checkbox" value = "">
+                    Highlight STEM Majors
+                </label>
+            </div>
+            <div class = "mapfilters-subheaders">
+                Please confirm majors of interest:
+            </div>
+            <div id = "mapfilters-majorselect">
+                <select id="select2-major" class="select2-container" multiple="multiple">
+                    {% for major in majors %}
+                    <option value="{{ major.code }}">{{ major.description }}</option> 
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div class = "mapfilters-subheaders">
+                Please select levels of education:
+            </div>
+            <div id = "mapfilters-educationselect">
+                <select id="select2-level" class="select2-container" multiple="multiple">
+                    {% for val, label in levels %}
+                    <option value="{{ val }}">{{ label }}</option> 
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div class = "mapfilters-subheaders">
+                Please select diversity categories:
+            </div>
+            <div id = "mapfilters-diversityselect">
+                <select id="select2-diversity" class="select2-container" multiple="multiple">
+                    <optgroup id="optgroup-gender" label = "Gender">
+                        {% for val, label in genders %}
+                        <option value="{{ val }}">{{ label }}</option> 
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup id="optgroup-ethnicity" label = "Race/Ethnicity">
+                        {% for val, label in ethnicities %}
+                        <option value="{{ val }}">{{ label }}</option> 
+                        {% endfor %}
+                    </optgroup>
+                </select>
+            </div> 
+            <br>   
+            <div class = "mapfilters-subheaders">
+                Please select locations:
+            </div>
+            <div id = "mapfilters-locationselect">
+                <select id="select2-location" class="select2-container" multiple="multiple">
+                    {% for val, label in locations %}
+                    <option value="{{ val }}">{{ label }}</option> 
+                    {% endfor %}
+                </select>
+            </div>
+            <p class = "mapfilters-subheaders instructions"> 
+                <b>
+                    Click submit to find schools which best match the criteria.
+                </b>
+            </p>
+            <div class="btn-group mapfilters-subheaders2" role="group">
+                <button type="button" id="submit" class="btn btn-default mapfilters-pagescrollbtn2">Submit</button>
+                <button type="button" id="clear" class="btn btn-default mapfilters-pagescrollbtn2">Clear</button>
+            </div>
+        </div>    
+    </div>      
+    <div id="page-content-wrapper">
+        <a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle" data-toggle="popover" data-placement="right" data-title="2. List School Results" 
+            data-content='Click the "Menu" button to hide the input menu and show a list of schools ranked by the likelihood of hiring candidates who meet the selected criteria.'>
+            <img src="{% static 'dashboard/img/WFAFavicon.png' %}" height="12px" width="12px">
+            <span id="menu-text">MENU</span>
+        </a>
+        <div class="map-header">
+            <div class = "map-title">
+                Map of Schools to Target for Hiring
+            </div>
+            <div class = "map-subtitle">
+                Click on icons to obtain more information about a specific program
+            </div>
+        </div>
+        <div class = "map-list">
+            <table id="schoolsTable" class="display">
+            </table>
+        </div>
+        <div class = "map-container">
+            <div id="map" data-toggle="popover" data-placement="right" data-title="4. Select School" 
+                data-content="Click a school to see a detailed dashboard about the school and the graduates who meet the selected criteria.">
+                <div id="map-legend"></div>
+            </div>
+            <div class = "showaffbtn">
+                <span id="affbutton" data-toggle="popover" data-placement="right" data-title="3. Show Recruiting Affiliations" 
+                    data-content='Click the "Show Affiliations" button to color each school on the map according to whether current recruiting efforts there are on-campus, virtual, or nonexistent.'>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip">Show Affiliations</button>
+                </span>
+                <span id="afflegend">
+                </span>
+            </div>
+        </div>
+        <div class ="copyright">
+        Copyright &copy; Deloitte 2015. All Rights Reserved
+        </div>
+    </div> 
+</div>
+<!-- /Map Page -->
+<!-- Footer -->
+<footer>
+</footer>
+<!-- /Footer -->
+
+<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
+
+<!-- jQuery -->
+<script src= "{% static 'dashboard/js/jquery-1.11.3.min.js' %}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src= "{% static 'dashboard/js/bootstrap.min.js' %}"></script>
+
+<!-- Select2 -->
+<script src= "{% static 'dashboard/js/select2.js' %}"></script>
+
+<!-- Leaflet -->
+<script src= "{% static 'dashboard/js/Leaflet.js' %}"></script>
+
+<!-- d3 -->
+<script src= "{% static 'dashboard/js/d3.js' %}"></script>
+
+<!-- csrfProtect -->
+<script src= "{% static 'dashboard/js/csrfProtect.js' %}"></script>
+
+<!-- datatables -->
+<script src= "{% static 'dashboard/js/jquery.dataTables.js' %}"></script>
+
+<!-- lodash -->
+<script src= "{% static 'dashboard/js/lodash.min.js' %}"></script>
+
+<!-- tooltip -->
+<script src= "{% static 'dashboard/js/d3-tip.js' %}"></script>
+
+<!-- bubble chart -->
+<script src= "{% static 'dashboard/js/bubblechart.js' %}"></script>
+
+<!-- sourcingtool -->
+<script src= "{% static 'dashboard/js/sourcingtool.js' %}"></script>
+</body>
+
+</html>
